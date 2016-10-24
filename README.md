@@ -43,6 +43,6 @@ Functionality of QuickPro is as follows:
 
 12) ReNamer opens populated with files from the accession and with a basic cleanup rules preset loaded
 
-The intent of the batch is to automate the tedious parts of the e-records workflow, leaving archivists with the mental energy to work on the human-applicable parts, such as arrangement and description.
+The intent of the batch is to automate the tedious parts of the e-records workflow, leaving archivists with the mental energy to work on the human-applicable parts, such as arrangement and description. Directory references are based on UWM internal folder structure for now but can easily be generalized as needed.
 
 
