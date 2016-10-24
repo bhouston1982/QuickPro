@@ -111,7 +111,9 @@ echo:
 
 :XENA
 echo:
-echo Placeholder for XENA command line functionality. Haven't got this one to work yet. Check back later.
+echo Now Normalizing Files with XENA...
+cd "%DIR%\Access Copies"
+for /r %%i in (*) do java -jar "H:\Departments\Archives\Admin\E-recs workflow tools\Step 4-Preservation\National Archives of Australia\Xena\xena.jar" au.gov.naa.digipres.xena.core.XenaMain -f "%%i" -p "H:\Departments\Archives\Admin\E-recs workflow tools\Step 4-Preservation\National Archives of Australia\Xena\plugins" -o "%DIR%\preservation" -c
 
 :bye
 echo:
