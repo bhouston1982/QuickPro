@@ -19,17 +19,17 @@ Tools and programs required for QuickPro full functionality include:
 
 Functionality of QuickPro is as follows:
 
-1) User Enters Accession Directory and Number (This is something that you have to do at the start of each session because I haven't figured out how to store variables.)
+1) User Enters Accession Directory (This is something that you have to do at the start of each session because I haven't figured out how to store variables. Plus side, I did figure out how to extract the accession number! So that's something)
 
 2) User Enters Collection Title and Date of Transfer (first time only) (Fed into BagIt; can be altered to include additional BagIt fields for the BagInfo, but these seemed like the bare minimum needed)
 
 3) BagIt creates a Bag for the records (including manifests and Bag Info)
 
-4) DROID creates a profile from the input directory (Requires batch restart)
+4) DROID creates a profile from the input directory
 
-5) DROID creates a searchable manifest from the input directory (Requires batch restart)
+5) DROID creates a searchable manifest from the input directory
 
-6) DROID creates a comprehensive breakdown report from the input directory (Requires batch restart)
+6) DROID creates a comprehensive breakdown report from the input directory
 
 7) Metadata (including manifests) are moved to a Metadata Folder inside the SIP
 
