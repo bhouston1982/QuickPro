@@ -16,10 +16,24 @@ REM H:\departments\archives\E-recs-unprocessed\, and the accession number is der
 REM characters of the folder name. If a folder does not have an accession number, assign a dummy 
 REM number for the sake of correct input.
 
-set /p Dir=Please enter the name of the accession directory to be processed (Format YYYY-NNColl):  
+
+REM If you are one of my lovely testers outside of UWM, you'll need to change 
+REM the locations of the various programs and scripts being called here. In general, 
+REM when you see a path along the lines of "H:\Departments\Archives\E-recs-unprocessed\
+REM or "H:\Departments\Archives\E-records workspace", you should delete that and put in 
+REM your own path to the file being called. (If you can put those programs in your SYSTEM 
+REM path, even better... but I don't know how to do that).
+
+echo:
+echo Your directory name should have the format "YYYY-NNColl". If it does not, please go change it so that it does. We'll wait here.
+echo:
+pause
+echo:
+set /p Dir=Please enter the name of the accession directory to be processed:  
 set Acc=%DIR:~0,8%
 set dropro=H:\Departments\Archives\E-recs-unprocessed\DROID%acc%.droid
 set Dir=H:\Departments\Archives\E-recs-unprocessed\%DIR%
+echo:
 choice /M "You will process accession %ACC% in %DIR%. Is this right?"
 if errorlevel 2 goto :entry
 
@@ -27,6 +41,7 @@ REM To do: Find a good way to allow the user to input a custom accession number 
 REM change the folder title manually. (I may have to translate to a different language for this.)
 
 if exist "%dir%\bagit.txt" goto :droid
+echo:
 choice /M "Do you want to Bag your files?"
 if errorlevel 2 goto :droid
 
@@ -57,6 +72,7 @@ Choice /M "Do you want to continue?"
 if errorlevel 2 goto :bye
 
 pause
+
 :droid
 
 REM This step creates a DROID profile in the e-records unprocessed base directory for the accession, from
@@ -70,11 +86,7 @@ Choice /M "Do you want to run a DROID profile?"
 if errorlevel 2 goto :manifest
 Echo Now running DROID file characterization...
 
-
-
-
 call "H:\Departments\Archives\e-records workspace\Tools for Use\2.Ingest\DROID\droid-binary-6.2.1-bin\droid" -a "%DIR%" -R -p "H:\Departments\Archives\E-recs-unprocessed\DROID%acc%.droid"
-
 
 Echo Done!
 Choice /M "Do you want to continue?"
@@ -127,7 +139,7 @@ REM will not validate.
 
 cd "%dir%"
 move *.txt .\metadata
-if exist "%DIR%\Working Copies" goto :EXIFTool
+if exist "%DIR%\Working Copies" goto :readonly
 echo:
 Echo Now creating working copies...
 mkdir "%DIR%\Working Copies"
@@ -182,7 +194,7 @@ choice /m "Do you want to find duplicate files?"
 if errorlevel 2 goto :BulkExtractor
 echo:
 echo Now using FindDupe to find duplicate files. Review the batch file created and then run it to delete the duplicates.
-"H:\Departments\Archives\e-records workspace\FindDupe -bat %ACC%Deletes.bat -del "%DIR%\Working Copies"
+"H:\Departments\Archives\e-records workspace\FindDupe.exe" -bat "%DIR%\metadata\%ACC%Deletes.bat" -del "%DIR%\Working Copies"
 
 :BulkExtractor
 
@@ -211,8 +223,15 @@ REM This step will create a preservation.csv file in the accession's metadata fo
 REM from which the archivist will select descriptive fields to create the Access.xlsx
 REM file. Because this step runs on the working copies of the materials, and is
 REM intended to create a file navigation tool for patrons, it is STRONGLY
-REM RECOMMENDED that manual appraisal/file renaming/deduplication be completed
+REM RECOMMENDED that manual arrangement/file renaming/deduplication be completed
 REM before proceeding to this step.
+
+echo Next step is EXIFTool, which will create a file manifest of your working copies
+echo directory. This will be used to create the descriptive data table for patron use.
+echo It is strongly recommended that any manual inputs be completed before continuing.
+echo:
+pause
+echo:
 
 choice /m "Do you want to run EXIFTool?"
 if errorlevel 2 goto :XENA
