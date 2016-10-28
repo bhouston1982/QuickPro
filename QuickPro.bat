@@ -40,7 +40,6 @@ if errorlevel 2 goto :entry
 REM To do: Find a good way to allow the user to input a custom accession number without having to
 REM change the folder title manually. (I may have to translate to a different language for this.)
 
-if exist "%dir%\bagit.txt" goto :droid
 echo:
 choice /M "Do you want to Bag your files?"
 if errorlevel 2 goto :droid
@@ -67,6 +66,7 @@ REM absolute paths. This should make universalizing this code a bit easier.
 
 python H:\Departments\Archives\E-recs-unprocessed\bagit.py --source-organization "%src%" --external-identifier "%acc%" "%dir%"
 
+cls
 Echo Done!
 Choice /M "Do you want to continue?"
 if errorlevel 2 goto :bye
@@ -81,13 +81,13 @@ REM or report fails for some reason, but it may be appropriate to delete them on
 REM I've included a commented-out line of code after the report finishes if we want to add this.
 
 echo:
-if exist "H:\Departments\Archives\E-recs-unprocessed\DROID%acc%.droid" goto :manifest
 Choice /M "Do you want to run a DROID profile?"
 if errorlevel 2 goto :manifest
 Echo Now running DROID file characterization...
 
 call "H:\Departments\Archives\e-records workspace\Tools for Use\2.Ingest\DROID\droid-binary-6.2.1-bin\droid" -a "%DIR%" -R -p "H:\Departments\Archives\E-recs-unprocessed\DROID%acc%.droid"
 
+cls
 Echo Done!
 Choice /M "Do you want to continue?"
 if errorlevel 2 goto :bye
@@ -100,13 +100,14 @@ REM filter by key attributes (e.g. File Mismatch=True) but I haven't implemented
 REM the filter/sort capability within Excel.
 
 echo:
-if exist "%DIR%\metadata\DROID%acc%.csv" goto :reports
 Choice /m "Do you want to run a DROID manifest?"
 if errorlevel 2 goto :reports
 Echo Now running manifest...
 mkdir "%DIR%\metadata"
 call "H:\Departments\Archives\e-records workspace\Tools for Use\2.Ingest\DROID\droid-binary-6.2.1-bin\droid" -p "%dropro%" -e "%DIR%\metadata\DROID%acc%.csv"
 
+cls
+echo Done!
 Choice /M "Do you want to continue?"
 if errorlevel 2 goto :bye
 
@@ -119,12 +120,13 @@ REM extension after the -r argument in line 114 and it will output to your forma
 REM The below line will delete the DROID profile file if it detects a report has been generated.
 
 REM if exist "%DIR%"\metadata\DROID%acc%.pdf del "%dropro%
-
-if exist "%DIR%\metadata\DROID%acc%.pdf" goto :filecleanup
+echo:
 choice /m "Do you want to run DROID reports?"
 if errorlevel 2 goto :filecleanup
 call "H:\Departments\Archives\e-records workspace\Tools for Use\2.Ingest\DROID\droid-binary-6.2.1-bin\droid" -p "%dropro%" -n "Comprehensive breakdown" -r "%DIR%\metadata\DROID%acc%.pdf" 
 
+cls
+echo Done!
 Choice /M "Do you want to continue?"
 if errorlevel 2 goto :bye
 pause
@@ -163,7 +165,7 @@ attrib /S /D +R
 
 Choice /M "Do you want to continue?"
 if errorlevel 2 goto :bye
-pause
+
 
 :ReNamer
 REM For the moment this just launches the GUI version of Den4b's Renamer software.
@@ -179,7 +181,6 @@ echo ReNamer should have opened in Windows. Make any changes you need to and clo
 echo:
 Choice /M "Do you want to continue?"
 if errorlevel 2 goto :bye
-pause
 
 
 :FindDupe
@@ -193,9 +194,19 @@ REM copies of the same file in different formats, use the DupeGuru GUI.
 choice /m "Do you want to find duplicate files?"
 if errorlevel 2 goto :BulkExtractor
 echo:
-echo Now using FindDupe to find duplicate files. Review the batch file created and then run it to delete the duplicates.
+echo Now using FindDupe to find duplicate files. Review the batch file
+echo created and then run it to delete the duplicates.
+pause
 "H:\Departments\Archives\e-records workspace\FindDupe.exe" -bat "%DIR%\metadata\%ACC%Deletes.bat" -del "%DIR%\Working Copies"
+cls
+echo Done! The list of duplicates is in the metadata folder as "20XX-YYDeletes.bat". (We'll open the directory for you.) 
+echo: 
+echo Edit the file as necessary, save, double click to run deletions, then rename the file "20XX-YYDeletes.txt" for documentation.
 
+%systemRoot%\explorer.exe "%DIR%\metadata"
+
+Choice /M "Do you want to continue?"
+if errorlevel 2 goto :bye
 :BulkExtractor
 
 REM Bulk_Extractor in theory will identify and flag PII such as credit card numbers
@@ -215,7 +226,6 @@ echo Now Running Bulk Extractor for PII....
 
 Choice /M "Do you want to continue?"
 if errorlevel 2 goto :bye
-pause
 
 :EXIFTool
 
@@ -225,10 +235,11 @@ REM file. Because this step runs on the working copies of the materials, and is
 REM intended to create a file navigation tool for patrons, it is STRONGLY
 REM RECOMMENDED that manual arrangement/file renaming/deduplication be completed
 REM before proceeding to this step.
-
+cls
 echo Next step is EXIFTool, which will create a file manifest of your working copies
-echo directory. This will be used to create the descriptive data table for patron use.
-echo It is strongly recommended that any manual inputs be completed before continuing.
+echo directory. This will be used to create the descriptive data table
+echo for patron use. It is strongly recommended that any manual inputs
+echo be completed before continuing.
 echo:
 pause
 echo:
@@ -241,7 +252,7 @@ echo Now Running EXIFTool for Preservation metadata....
 
 Choice /M "Do you want to continue?"
 if errorlevel 2 goto :bye
-pause
+
 
 :XENA
 
@@ -249,7 +260,7 @@ REM This step normalizes files into XENA packages, which are modified XML files.
 REM content can then be exported to preservation formats, such as ODT for text files.
 REM If you would like to convert to different formats than the XENA default, or
 REM you want to exclude a given folder from normalization, run the XENA GUI instead.
-
+echo:
 choice /m "Do you want to normalize files with XENA?"
 if errorlevel 2 goto :bye
 echo:
