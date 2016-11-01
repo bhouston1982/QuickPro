@@ -15,7 +15,11 @@ Tools and programs required for QuickPro full functionality include:
 
 --Bulk Extractor 1.5.5 or later
 
---Den4B ReNamer
+--Bulk Rename Utility (CommandLine)
+
+--FindDupe (available for download at http://www.sentex.net/~mwandel/finddupe/)
+
+--XENA (National Archives of Australia digital preservation software)
 
 Functionality of QuickPro is as follows:
 
@@ -37,11 +41,16 @@ Functionality of QuickPro is as follows:
 
 9) Originals are set to Read-Only
 
-10) EXIFTool extracts embedded metadata from the files and saves to a CSV file within the metadata folder
+10) FindDupe creates a list of exact duplicate files for the archivist's review; the archivist may delete directly from the list
 
-11) Bulk Extractor creates a features report to scan for PII
+11) Bulk Rename Utility iterates a set of rules to make file names a bit more file system-friendly
 
-12) ReNamer opens populated with files from the accession and with a basic cleanup rules preset loaded
+12) Bulk Extractor creates a features report to scan for PII
+
+13) EXIFTool extracts embedded metadata from the files and saves to a CSV file within the metadata folder
+
+14) XENA iterates through the files to create XENA objects inside a Preservation folder; these can be exported to open formats as needed
+
 
 The intent of the batch is to automate the tedious parts of the e-records workflow, leaving archivists with the mental energy to work on the human-applicable parts, such as arrangement and description. Directory references are based on UWM internal folder structure for now but can easily be generalized as needed.
 
