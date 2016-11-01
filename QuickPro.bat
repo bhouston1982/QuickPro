@@ -141,11 +141,12 @@ REM will not validate.
 
 cd "%dir%"
 move *.txt .\metadata
+rename data originals
 if exist "%DIR%\Working Copies" goto :readonly
 echo:
 Echo Now creating working copies...
 mkdir "%DIR%\Working Copies"
-xcopy "%DIR%\data" "%DIR%\Working Copies" /s /e 
+xcopy "%DIR%\originals" "%DIR%\Working Copies" /s /e 
 
 pause
 
@@ -156,7 +157,7 @@ REM folder will be set read-only by the Windows file system. If you still need t
 REM appraise and/or weed files in your originals, skip this step.
 
 echo:
-rename data originals
+
 choice /m "Are originals ready to be set read-only?"
 if errorlevel 2 goto :ReNamer
 echo Now setting originals read-only....
@@ -175,9 +176,9 @@ REM There's one version I need to test before I replace it; will make a branch f
 choice /m "Do you want to clean up file names?"
 if errorlevel 2 goto :FindDupe
 echo:
-echo Now adding to ReNamer...
-echo ReNamer should have opened in Windows. Make any changes you need to and close it to move the batch file along. We'll be here when you get back!
-"H:\Departments\Archives\e-records workspace\Tools for Use\3.Arrangement and Description\ReNamer\ReNamer" /preset "Basic_Cleaning" "%DIR%\Working Copies"
+echo Now running through Bulk Renamer Utility...
+
+"H:\Departments\Archives\e-records workspace\BRC_Unicode_32\BRC32.exe" /DIR:"%DIR%\Working Copies" /NOFOLDERS /RECURSIVE /STRIPSYMBOLS /TIDYDS /TRIM /REPLACECI:" ":"_" /NODUP /EXECUTE
 echo:
 Choice /M "Do you want to continue?"
 if errorlevel 2 goto :bye
