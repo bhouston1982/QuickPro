@@ -169,9 +169,10 @@ if errorlevel 2 goto :bye
 
 
 :ReNamer
-REM For the moment this just launches the GUI version of Den4b's Renamer software.
-REM I haven't been able to find a good command line version of a renaming tool. 
-REM There's one version I need to test before I replace it; will make a branch for it in GitHub.
+REM This will perform standard cleanup of file names (remove symbols, replace spaces with underscores)
+REM and recurse through subfolders. It is a *non-reversible* change, so make sure you have original file names
+REM preserved in either the DROID report or the Originals folder. If you need to make more extensive file name
+REM changes, you should use the ReNamer GUI tool.
 
 choice /m "Do you want to clean up file names?"
 if errorlevel 2 goto :FindDupe
