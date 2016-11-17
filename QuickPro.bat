@@ -170,14 +170,7 @@ if errorlevel 2 goto :bye
 
 
 :ReNamer
-<<<<<<< HEAD
 REM Testing Bulk Rename Utility in this spot. Will need to see how it does on files in the wild.
-=======
-REM This will perform standard cleanup of file names (remove symbols, replace spaces with underscores)
-REM and recurse through subfolders. It is a *non-reversible* change, so make sure you have original file names
-REM preserved in either the DROID report or the Originals folder. If you need to make more extensive file name
-REM changes, you should use the ReNamer GUI tool.
->>>>>>> origin/master
 
 choice /m "Do you want to clean up file names?"
 if errorlevel 2 goto :FindDupe
