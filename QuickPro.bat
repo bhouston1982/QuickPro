@@ -25,7 +25,7 @@ REM your own path to the file being called. (If you can put those programs in yo
 REM path, even better... but I don't know how to do that).
 
 echo:
-echo Your directory name should have the format "YYYY-NNColl". If it does not, please go change it so that it does. We'll wait here.
+echo Your directory name should have the format "YYYY-NNNColl". If it does not, please go change it so that it does. We'll wait here.
 echo:
 pause
 echo:
@@ -87,7 +87,7 @@ Echo Now running DROID file characterization...
 
 call "H:\Departments\Archives\e-records workspace\Tools for Use\2.Ingest\DROID\droid-binary-6.2.1-bin\droid" -a "%DIR%" -R -p "H:\Departments\Archives\E-recs-unprocessed\DROID%acc%.droid"
 
-cls
+
 Echo Done!
 Choice /M "Do you want to continue?"
 if errorlevel 2 goto :bye
@@ -99,11 +99,12 @@ REM This will create a CSV export of the DROID report, 1 line per file analyzed.
 REM filter by key attributes (e.g. File Mismatch=True) but I haven't implemented it yet. For now, use 
 REM the filter/sort capability within Excel.
 
+mkdir "%DIR%\metadata"
 echo:
 Choice /m "Do you want to run a DROID manifest?"
 if errorlevel 2 goto :reports
 Echo Now running manifest...
-mkdir "%DIR%\metadata"
+
 call "H:\Departments\Archives\e-records workspace\Tools for Use\2.Ingest\DROID\droid-binary-6.2.1-bin\droid" -p "%dropro%" -e "%DIR%\metadata\DROID%acc%.csv"
 
 cls
@@ -169,9 +170,7 @@ if errorlevel 2 goto :bye
 
 
 :ReNamer
-REM For the moment this just launches the GUI version of Den4b's Renamer software.
-REM I haven't been able to find a good command line version of a renaming tool. 
-REM There's one version I need to test before I replace it; will make a branch for it in GitHub.
+REM Testing Bulk Rename Utility in this spot. Will need to see how it does on files in the wild.
 
 choice /m "Do you want to clean up file names?"
 if errorlevel 2 goto :FindDupe
@@ -179,6 +178,7 @@ echo:
 echo Now running through Bulk Renamer Utility...
 
 "H:\Departments\Archives\e-records workspace\BRC_Unicode_32\BRC32.exe" /DIR:"%DIR%\Working Copies" /NOFOLDERS /RECURSIVE /STRIPSYMBOLS /TIDYDS /TRIM /REPLACECI:" ":"_" /NODUP /EXECUTE
+"H:\Departments\Archives\e-records workspace\BRC_Unicode_32\BRC32.exe" /DIR:"%DIR%\Working Copies" /NOFILES /RECURSIVE /STRIPSYMBOLS /TIDYDS /TRIM /REPLACECI:" ":"_" /NODUP /EXECUTE
 echo:
 Choice /M "Do you want to continue?"
 if errorlevel 2 goto :bye
@@ -239,7 +239,7 @@ REM before proceeding to this step.
 cls
 echo Next step is EXIFTool, which will create a file manifest of your working copies
 echo directory. This will be used to create the descriptive data table
-echo for patron use. It is strongly recommended that any manual inputs
+echo for patron use. It is strongly recommended that any manual changes to the files
 echo be completed before continuing.
 echo:
 pause
@@ -271,6 +271,15 @@ for /r %%i in (*) do java -jar "H:\Departments\Archives\Admin\E-recs workflow to
 
 :bye
 echo:
-Echo Done! Thanks for testing this batch file. Now opening SIP for your inspection...
+Echo Done! Creating a Directory Tree and file list for you. Thanks for testing this batch file. Now opening SIP for your inspection...
+
+
+REM The last output of this file is a pair of files, one that provides the file tree in ASCII
+REM format, and one that provides a flat list of all folders. Both of these files can be 
+REM imported into Excel one line per row, which may make it easier to convert the folder
+REM list into component listings for the contents list.
+
+tree %dir% /a > foldertree.txt
+dir %dir% /a:d /b /s > folderlist.txt
 cd H:\Departments\Archives\e-records workspace
 %systemRoot%\explorer.exe "%DIR%"
